@@ -1,0 +1,27 @@
+version: "3.8"
+services: 
+  mysqldb: 
+    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=jwt
+    ports: 
+     - 3307:3306
+    volumes:
+      - db:/var/lib/mysql 
+      - ./jwt.sql:/docker-entrypoint-initdb.d/init.sql
+  app:
+    depends_on:
+      - mysqldb
+    image: jwt-app
+    ports:
+      - 6868:8080
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
+        
