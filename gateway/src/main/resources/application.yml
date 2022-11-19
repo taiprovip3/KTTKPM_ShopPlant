@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service-jwt-token-login
+          uri: http://localhost:9001/service-jwt-token/login
+          predicates:
+            - Path=/login
+        - id: service-client-cart
+          uri: http://localhost:9002/
+          predicates:
+            - Path=/department
+server:
+  port: 9000
