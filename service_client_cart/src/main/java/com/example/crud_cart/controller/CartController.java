@@ -23,14 +23,12 @@ public class CartController {
 	
 	private CartService cartService;
 	private PlantService plantService;
-    private RedisTemplate template;
 
 	
 	@Autowired
-	public CartController(CartService cartService, PlantService plantService, RedisTemplate template) {
+	public CartController(CartService cartService, PlantService plantService) {
 		this.cartService = cartService;
 		this.plantService = plantService;
-		this.template = template;
 	}
 
 	@GetMapping("/carts/{idUser}")
