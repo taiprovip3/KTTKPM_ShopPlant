@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service_jwt_token
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/service_jwt_token/**
+            - Method=GET,POST
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+              allowedHeaders: '*'
+              maxAge: 30
+        - id: service_admin_plant
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/service_admin_plant/**
+            - Method=GET,POST
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+              allowedHeaders: '*'
+              maxAge: 30
+        - id: service_client_cart
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/service_client_cart/**
+            - Method=GET,POST
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+              allowedHeaders: '*'
+              maxAge: 30
+server:
+  port: 8080
