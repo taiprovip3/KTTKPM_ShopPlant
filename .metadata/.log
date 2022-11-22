@@ -12322,6 +12322,7 @@ java.util.concurrent.TimeoutException
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
 =======
 >>>>>>> 70836e9566695112c0ec4668964f582ab4e3b697
+<<<<<<< HEAD
 !SESSION 2022-11-22 11:12:26.990 -----------------------------------------------
 eclipse.buildId=4.25.0.I20220831-1800
 java.version=17.0.4.1
@@ -12453,3 +12454,5 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+=======
+>>>>>>> 2a9c75c2d0e396e6b834a84ecd2aca665acebfb3
