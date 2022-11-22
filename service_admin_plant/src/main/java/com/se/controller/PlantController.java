@@ -12,23 +12,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.se.entity.Plant;
 import com.se.service.PlantService;
+
+import io.github.resilience4j.retry.annotation.Retry;
 
 @RestController
 @RequestMapping("/admin")
 public class PlantController {
+	private int attempts = 1;
 	@Autowired
 	private PlantService plantService;
 	
 	@GetMapping("plants")
-	public List<Plant> listStudent() {
+	public List<Plant> listPlant() {
 		List<Plant> plants = plantService.findAllPlant(); 
 		return plants;
 	}
 	
+	public List<Plant> fallback_retry(Exception e) {
+		attempts = 1;
+		return null;
+	}
+	
 	@GetMapping("plants/{idPlant}")
-	public Plant findOneStudent(@PathVariable int id) {
+	@Retry(name = "plantSearch", fallbackMethod = "fallback_retry")
+	public Plant findOnePlant(@PathVariable int id) {
 		Plant plant = plantService.findPlantById(id);
 		return plant;
 	}

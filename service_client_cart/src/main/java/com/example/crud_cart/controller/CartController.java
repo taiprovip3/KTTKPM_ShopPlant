@@ -3,7 +3,8 @@ package com.example.crud_cart.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,29 +18,36 @@ import com.example.crud_cart.entity.Plant;
 import com.example.crud_cart.service.CartService;
 import com.example.crud_cart.service.PlantService;
 
+import io.github.resilience4j.retry.annotation.Retry;
+
 @RestController
 @RequestMapping("/cart_service")
 public class CartController {
-	
+
+	private int attempts = 1;
+
 	private CartService cartService;
 	private PlantService plantService;
-    private RedisTemplate template;
 
-	
 	@Autowired
-	public CartController(CartService cartService, PlantService plantService, RedisTemplate template) {
+	public CartController(CartService cartService, PlantService plantService) {
 		this.cartService = cartService;
 		this.plantService = plantService;
-		this.template = template;
 	}
 
 	@GetMapping("/carts/{idUser}")
-	public List<Cart> getCartOfUser(@PathVariable int idUser){
-		List<Cart> carts = cartService.getCartOfUser(idUser);
-//		Map<Integer, Cart> cartMap = carts.stream().collect(Collectors.toMap(Cart::getQuantity, Function.identity()));
-//		template.opsForList().rightPushAll("carts", carts);
-//		System.out.println(template.opsForList().range("carts", 0, 1000));
-		return carts;
+	@Retry(name = "flightSearch", fallbackMethod = "fallback_retry")
+	public List<Cart> getCartOfUser(@PathVariable int idUser) {
+		System.out.println("item service call attempted:::" + attempts++);
+//		List<Cart> carts = cartService.getCartOfUser(idUser);
+		throw new RuntimeException();
+//		System.out.println("item service called");
+//		return carts;
+	}
+
+	public List<Cart> fallback_retry(Exception e) {
+		attempts = 1;
+		return null;
 	}
 
 	@PostMapping("/carts")
@@ -49,7 +57,7 @@ public class CartController {
 		cart.setTotal(total);
 		return cartService.saveCart(cart);
 	}
-	
+
 	@DeleteMapping("/carts/{idPlant}&&{idUser}")
 	public long deleteCart(@PathVariable int idPlant, @PathVariable int idUser) {
 		return cartService.deleteCart(idPlant, idUser);
