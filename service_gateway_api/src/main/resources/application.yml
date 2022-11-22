@@ -1,11 +1,13 @@
 spring:
+  application:
+    name: service_getway_api
   cloud:
     gateway:
       routes:
         - id: service_jwt_token
-          uri: http://localhost:8081/
+          uri: http://localhost:8081/service_jwt_token/**
           predicates:
-            - Path=/service_jwt_token/**
+            - Path=/**
             - Method=GET,POST
           metadata:
             cors:
@@ -16,9 +18,9 @@ spring:
               allowedHeaders: '*'
               maxAge: 30
         - id: service_admin_plant
-          uri: http://localhost:8082/
+          uri: http://localhost:8082/service_admin_plant/**
           predicates:
-            - Path=/service_admin_plant/**
+            - Path=/**
             - Method=GET,POST
           metadata:
             cors:
@@ -29,9 +31,9 @@ spring:
               allowedHeaders: '*'
               maxAge: 30
         - id: service_client_cart
-          uri: http://localhost:8083/
+          uri: http://localhost:8083/service_client_cart/**
           predicates:
-            - Path=/service_client_cart/**
+            - Path=/**
             - Method=GET,POST
           metadata:
             cors:
@@ -43,3 +45,7 @@ spring:
               maxAge: 30
 server:
   port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

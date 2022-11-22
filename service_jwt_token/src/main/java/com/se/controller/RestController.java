@@ -23,7 +23,7 @@ import com.se.service.UserServices;
 import com.se.util.JwtUltility;
 
 @org.springframework.web.bind.annotation.RestController
-@RequestMapping("/")
+@RequestMapping("/service_jwt_token")
 public class RestController {
 	
 	
