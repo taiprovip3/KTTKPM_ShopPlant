@@ -39,6 +39,17 @@ public class RestController {
 		this.restTemplate = restTemplate;
 	}
 	
+	@GetMapping("/plants/generate")
+	public String generatePlantsData() {
+		ResponseEntity<String> responseEntity = restTemplate.exchange(
+				SERVICE_ADMIN_PLANT_CRUD_URL + "/generate",
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<String>() {}
+		);
+		return responseEntity.getBody();
+	}
+	
 
 //	@CircuitBreaker(name = "CIRCUIT_BREAKER_1", fallbackMethod = "getFakeListPlant")
 //	@Retry(name = "RETRY_1", fallbackMethod = "getFakeListPlant")
@@ -55,27 +66,28 @@ public class RestController {
 //		return plants;
 //	}
 
-//	@GetMapping("/plants")
-//	@TimeLimiter(name = "TIME_LIMITER_1")
-//	public CompletableFuture<Void> removePlant() {
-// 		return CompletableFuture.runAsync(new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//					Thread.sleep(3000);
-//					ResponseEntity<List<Plant>> responseEntity = restTemplate.exchange(
-//						SERVICE_ADMIN_PLANT_CRUD_URL,
-//						HttpMethod.GET,
-//						null,
-//						new ParameterizedTypeReference<List<Plant>>() {}
-//					);
+	@GetMapping("/plants")
+	@TimeLimiter(name = "TIME_LIMITER_1")
+	public CompletableFuture<Void> removePlant() {
+ 		return CompletableFuture.runAsync(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(3000);
+					ResponseEntity<List<Plant>> responseEntity = restTemplate.exchange(
+						SERVICE_ADMIN_PLANT_CRUD_URL,
+						HttpMethod.GET,
+						null,
+						new ParameterizedTypeReference<List<Plant>>() {}
+					);
 //					System.out.println(responseEntity.getBody());
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+					System.out.println("Tác vụ sau 3s mới thực hiện được");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 	public List<Plant> getFakeListPlant(Exception e) {
 		return Stream.of(

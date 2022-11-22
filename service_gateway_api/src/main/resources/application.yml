@@ -7,7 +7,7 @@ spring:
         - id: service_jwt_token
           uri: http://localhost:8081/service_jwt_token/**
           predicates:
-            - Path=/**
+            - Path=/service_jwt_token/**
             - Method=GET,POST
           metadata:
             cors:
@@ -17,23 +17,10 @@ spring:
                 - POST
               allowedHeaders: '*'
               maxAge: 30
-        - id: service_admin_plant
-          uri: http://localhost:8082/service_admin_plant/**
+        - id: admin_rest_template
+          uri: http://localhost:8086/admin_rest_template/**
           predicates:
-            - Path=/**
-            - Method=GET,POST
-          metadata:
-            cors:
-              allowedOrigins: '*'
-              allowedMethods:
-                - GET
-                - POST
-              allowedHeaders: '*'
-              maxAge: 30
-        - id: service_client_cart
-          uri: http://localhost:8083/service_client_cart/**
-          predicates:
-            - Path=/**
+            - Path=/admin_rest_template/**
             - Method=GET,POST
           metadata:
             cors:

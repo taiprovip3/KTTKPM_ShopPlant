@@ -31,7 +31,7 @@ public class ApiRestController {
 	
 	@GetMapping("/plants/generate")
 	public String generatePlant() {
-		for(int i=1; i<100; i++) {
+		for(int i=1; i<1000; i++) {
 			Plant plant = new Plant();
 			plant.setId(i);
 			plant.setName("Tree Plant " + i);
@@ -47,11 +47,6 @@ public class ApiRestController {
 	@CachePut(value = "Plants_Hash")
 	@GetMapping("/plants")
 	public List<Plant> getPlans(){
-//		try {
-//			Thread.sleep(10000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
 		return plantDaoImpl.getPlants();
 	}
 
