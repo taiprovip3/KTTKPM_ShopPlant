@@ -30,6 +30,19 @@ spring:
                 - POST
               allowedHeaders: '*'
               maxAge: 30
+        - id: client_rest_template
+          uri: http://localhost:8083/client_rest_template/**
+          predicates:
+            - Path=/client_rest_template/**
+            - Method=GET,POST, DELETE
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+              allowedHeaders: '*'
+              maxAge: 30
 server:
   port: 8080
 eureka:

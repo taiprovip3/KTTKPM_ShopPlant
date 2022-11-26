@@ -18,7 +18,9 @@ import com.example.crud_cart.entity.Plant;
 import com.example.crud_cart.service.CartService;
 import com.example.crud_cart.service.PlantService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @RestController
 @RequestMapping("/cart_service")
@@ -36,13 +38,14 @@ public class CartController {
 	}
 
 	@GetMapping("/carts/{idUser}")
-	@Retry(name = "flightSearch", fallbackMethod = "fallback_retry")
+//	@CircuitBreaker(name = "CIRCUIT_BREAKER_1", fallbackMethod = "fallback_retry")
+//	@Retry(name = "RETRY_1", fallbackMethod = "fallback_retry")
+//	@TimeLimiter(name = "TIME_LIMITER_1")
 	public List<Cart> getCartOfUser(@PathVariable int idUser) {
-		System.out.println("item service call attempted:::" + attempts++);
-//		List<Cart> carts = cartService.getCartOfUser(idUser);
-		throw new RuntimeException();
-//		System.out.println("item service called");
-//		return carts;
+//		System.out.println("Lần gọi thứ " + attempts++);
+		List<Cart> carts = cartService.getCartOfUser(idUser);
+//		System.out.println("Gọi thành công!");
+		return carts;
 	}
 
 	public List<Cart> fallback_retry(Exception e) {
