@@ -34,7 +34,14 @@ resilience4j:
       TIME_LIMITER_1:
         timeoutDuration: 2000
         cancelRunningFuture: true
-
+  ratelimitter:
+    instances:
+      RATE_LIMITER_1:
+        limitForPeriod: 2
+        limitRefreshPeriod: 42
+        timeoutDuration: 10s
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 100
 
 
 
