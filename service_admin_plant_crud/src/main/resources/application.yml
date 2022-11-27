@@ -1,0 +1,28 @@
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+
+resilience4j:
+  ratelimiter:
+    instances:
+      RATE_LIMITER_1:
+        limitForPeriod: 4
+        limitRefreshPeriod: 10s
+        timeoutDuration: 2s
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 100
+
+
+
+
+
+

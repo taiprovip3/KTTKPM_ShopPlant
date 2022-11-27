@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.se.dao.PlantDaoImpl;
 import com.se.entity.Plant;
+
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 
 @RestController
 @RequestMapping("/service_admin_plant_crud") //http://localhost:8085/service_admin_plant_crud/plants/
@@ -73,5 +77,12 @@ public class ApiRestController {
 			e.printStackTrace();
 		}
 		return "Something error when delete!";
+	}
+	
+	@GetMapping("/plants/hello_world")
+	@RateLimiter(name = "RATE_LIMITER_1")
+	public ResponseEntity<String> helloWorld() {
+		System.out.println("Server said hello world!");
+		return new ResponseEntity<String>("Hello World from server!", HttpStatus.OK);
 	}
 }

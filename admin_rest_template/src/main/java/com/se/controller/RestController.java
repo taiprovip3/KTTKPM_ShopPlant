@@ -1,6 +1,7 @@
 package com.se.controller;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -51,22 +52,36 @@ public class RestController {
 		return responseEntity.getBody();
 	}
 	
+	@GetMapping("/testRateLimitter")
+	public String testRateLimitter () {
+		for (int i = 0; i < 10; i++) {
+			try {
+				Thread.sleep(1000);
+				String mystring = restTemplate.getForObject(SERVICE_ADMIN_PLANT_CRUD_URL + "/hello_world", String.class);
+				System.out.println(mystring);
+			} catch (Exception e) {
+				return e.getLocalizedMessage();
+			}
+		}
+		return "Finish called one time";
+	}
+
 
 //	@CircuitBreaker(name = "CIRCUIT_BREAKER_1", fallbackMethod = "getFakeListPlant")
 //	@Retry(name = "RETRY_1", fallbackMethod = "getFakeListPlant")
 //	@RateLimiter(name = "RATE_LIMITER_1", fallbackMethod = "getFakeListPlant")
-	@GetMapping("/plants")
-	public List<Plant> findAllPlant() {
-//		System.out.println("Method findAllPlant() retry " + ATTEMP_RETRY++ + " times at " + LocalDateTime.now() + "\n\n");
-		ResponseEntity<List<Plant>> responseEntity = restTemplate.exchange(
-				SERVICE_ADMIN_PLANT_CRUD_URL,
-				HttpMethod.GET,
-				null,
-				new ParameterizedTypeReference<List<Plant>>() {}
-		);
-		List<Plant> plants = responseEntity.getBody();
-		return plants;
-	}
+//	@GetMapping("/plants")
+//	public List<Plant> findAllPlant() {
+////		System.out.println("Method findAllPlant() retry " + ATTEMP_RETRY++ + " times at " + LocalDateTime.now() + "\n\n");
+//		ResponseEntity<List<Plant>> responseEntity = restTemplate.exchange(
+//				SERVICE_ADMIN_PLANT_CRUD_URL,
+//				HttpMethod.GET,
+//				null,
+//				new ParameterizedTypeReference<List<Plant>>() {}
+//		);
+//		List<Plant> plants = responseEntity.getBody();
+//		return plants;
+//	}
 
 //	@GetMapping("/plants")
 //	@TimeLimiter(name = "TIME_LIMITER_1")
